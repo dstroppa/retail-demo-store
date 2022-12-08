@@ -1,5 +1,5 @@
 # Note that dependency versions must be compatible with SageMaker notebook python environment (3.6)
-certifi==2020.4.5.1
+certifi==2022.12.7
 chardet==3.0.4
 Faker==4.1.0
 idna==2.9
