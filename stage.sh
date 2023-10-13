@@ -26,7 +26,7 @@ set -e
 # 2. "private-s3" contains a boolean value whether "--private-s3" is presented (e.g. "./stage.sh --private-s3" will set this to true.
 # 3. "only-cfn-template" contains a boolean value whether only CloudFormation templates should be copied to staging bucket (default = false).
 # 4. "skip-generators" contains a boolean value whether the dataset generators should be skipped or not (default = false).
-# 5. "skip_virtualenv" contains a boolean value to be used if stage.sh is called from inside a virtualenv 
+# 5. "skip-virtualenv" contains a boolean value to be used if stage.sh is called from inside a virtualenv 
 ########################################################################################################################################
 args=()
 private_s3=false
@@ -55,11 +55,11 @@ do
         then
             skip_generators=true
             echo Received a \"--skip-generators\" flag. Will skip dataset generators.
-        elif [ "$bool" == "skip_virtualenv" ]
+        elif [ "$bool" == "skip-virtualenv" ]
         then
             # flag is to be used if the script is called from already a specific virtualenv
             skip_virtualenv=true
-            echo Received a \"--skip_virtualenv\" flag. Will skip virtualenv inside this script.            
+            echo Received a \"--skip-virtualenv\" flag. Will skip virtualenv inside this script.            
         else
             echo Received an unknown flag \"$bool\"
             exit 1
@@ -159,7 +159,7 @@ if [ "$only_cfn_template" = false ]; then
     aws s3 sync s3://retail-demo-store-code/datasets/1.4/images/ s3://${BUCKET}/${S3PATH}images/ $S3PUBLIC || echo "Skipping load of remote image dataset 1.4"
     aws s3 sync datasets/1.4/images/ s3://${BUCKET}/${S3PATH}images/ $S3PUBLIC || echo "Skipping load of local image dataset 1.4"
 
-    aws s3 sync ./src/videos/src/video-service/static s3://${BUCKET}/${S3PATH}images/videos/ $S3PUBLIC || echo "Skipping load of local video thumbnails"
+    aws s3 sync ./src/videos/src/videos-service/static s3://${BUCKET}/${S3PATH}images/videos/ $S3PUBLIC || echo "Skipping load of local video thumbnails"
 
     # Sync location data files
     echo " + Copying location location data"
