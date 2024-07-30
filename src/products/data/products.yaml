@@ -29220,4 +29220,94 @@
   - crisps
   - potato chips
   - potato crisps
-  where_visible: Alexa
+  where_visible: Alexa  
+- id: f6f5cf6c-9c0e-4dcb-af1b-2c524a7f83cb
+  current_stock: 15
+  name: Karaca Home Minerva Black Double Embroidered Duet Set
+  category: homedecor
+  style: bedroom
+  description: Elevate your bedroom with the sophisticated Karaca Home Minerva Black Double Embroidered Duvet Set. This luxurious bedding ensemble combines elegant design with premium comfort, perfect for those who appreciate both style and quality. The Karaca Home Minerva set transforms your bedroom into a chic retreat with its bold geometric patterns and crisp black and white color scheme. The embroidered details add a touch of luxury, while the 100% cotton duvet cover ensures a comfortable night's sleep. Easy to care for and built to last, this set is the perfect blend of fashion and function for the modern home.
+  price: 90.99
+  image: f6f5cf6c-9c0e-4dcb-af1b-2c524a7f83cb.jpg
+  gender_affinity: F
+  where_visible: UI
+- id: ae4e9e16-8fdd-4a73-80c3-ddfded3262d2
+  current_stock: 15
+  name: Sarah Anderson Softy Double Comfort Set Lilac
+  category: homedecor
+  style: bedroom
+  description: Indulge in luxurious comfort with the Sarah Anderson Softy Double Comfort Set in Lilac. This elegant bedding ensemble offers a perfect blend of style and coziness for your bedroom sanctuary. The Sarah Anderson Softy Double Comfort Set transforms your bedroom into a haven of relaxation. The quilted texture adds depth and luxury to the lilac hue, creating a serene and inviting atmosphere. The 100% polyester construction ensures durability and easy care, perfect for busy households.
+  price: 100.99
+  image: ae4e9e16-8fdd-4a73-80c3-ddfded3262d2.jpg
+  gender_affinity: F
+  where_visible: UI
+- id: c9b6d7d4-7bea-470e-bbd1-cb5697b24268
+  current_stock: 15
+  name: Karaca Home Scala Khaki Double Embosy Blanket 
+  category: homedecor
+  style: bedroom
+  description: Immerse yourself in luxurious comfort with the Karaca Home Scala Khaki Double Embossed Blanket. This elegant throw combines style and coziness to enhance your bedroom or living space. The Karaca Home Scala blanket transforms your bed or sofa with its sumptuous khaki hue and beautifully embossed design. The intricate pattern adds depth and luxury, creating a focal point in any room. Its lightweight construction makes it perfect for layering or using on its own across seasons.
+  price: 99.99
+  image: c9b6d7d4-7bea-470e-bbd1-cb5697b24268.jpg
+  gender_affinity: F
+  where_visible: UI
+- id: e1600d69-85ec-41a9-b00b-3e88c84f8267
+  current_stock: 15
+  name: Karaca Home Salerno Double Peshtamal Pike Yellow 
+  category: homedecor
+  style: bedroom
+  description: Elevate your bedroom with the Karaca Home Salerno Double Peshtamal Pike in vibrant Yellow. This versatile and stylish bedding accessory combines traditional Turkish design with modern comfort. The Karaca Home Salerno Pike brings a touch of Mediterranean flair to your bedroom. Its sunny yellow base with harmonious stripes in gray and white creates a warm, inviting atmosphere. The peshtamal-inspired design, complete with playful tassels, adds a unique textural element to your bedding ensemble.
+  price: 80.99
+  image: e1600d69-85ec-41a9-b00b-3e88c84f8267.jpg
+  gender_affinity: F
+  where_visible: UI
+- id: a149a9d8-9ff7-4add-a66f-aafecb3fc147
+  current_stock: 15
+  name: Karaca Home Rustic Vase Black
+  category: homedecor
+  style: decorative
+  description: Introduce a touch of rustic charm to your home with the Karaca Home Rustic Vase in Black. This striking decorative piece combines contemporary design with traditional elements for a versatile and eye-catching accent. The Karaca Home Rustic Vase showcases a beautiful blend of modern and ethnic styles. Its deep black base is adorned with intricate, natural-toned geometric patterns reminiscent of traditional tribal art. The contrast between the dark background and light designs creates a striking visual impact.
+  price: 40.99
+  image: a149a9d8-9ff7-4add-a66f-aafecb3fc147.jpg
+  gender_affinity: F
+  where_visible: UI
+- id: 4fceb61d-5dd4-4df2-8a5f-712aba6861a8
+  current_stock: 15
+  name: Karaca Home Velma Vase Lilac
+  category: homedecor
+  style: decorative
+  description: Elevate your home decor with the exquisite Karaca Home Velma Vase in a soothing lilac hue. This compact ceramic piece is perfect for adding a touch of elegance to any room. The Velma Vase's petite size makes it ideal for small floral arrangements, succulents, or as a standalone decorative accent. Its versatile design complements both modern and traditional interiors, making it a timeless addition to your home. Crafted from durable ceramic, this vase offers both style and practicality. The subtle lilac color adds a gentle pop of color without overwhelming your existing decor.
+  price: 30.99
+  image: 4fceb61d-5dd4-4df2-8a5f-712aba6861a8.jpg
+  gender_affinity: F
+  where_visible: UI
+- id: 3cc6088f-5023-438a-b224-e3cb479db4db
+  current_stock: 15
+  name: Karaca Home Simple Vase
+  category: homedecor
+  style: decorative
+  description: Elevate your home decor with the striking Karaca Home Simple Vase. This modern, sculptural piece combines form and function to create a stunning focal point in any room. The Simple Vase's distinctive shape features a curved white base that flows into a terracotta upper portion adorned with bold white geometric patterns. This eye-catching design makes it a standout decorative element even when not in use.
+  price: 35.99
+  image: 3cc6088f-5023-438a-b224-e3cb479db4db.jpg
+  gender_affinity: F
+  where_visible: UI
+- id: c5e5d6d0-4baf-4840-929b-d36261c019a7
+  current_stock: 15
+  name: Karaca Home Kassey Filled Throw Pillow Beige
+  category: homedecor
+  style: cushion
+  description: Elevate your living space with the Karaca Home Kassey Filled Throw Pillow in a soothing beige hue. This stylish accent piece combines comfort and contemporary design to enhance any room's decor. The Kassey pillow showcases a modern geometric pattern created with plush tufted lines in a warm beige tone. This textured design adds depth and visual interest to the pillow's surface, making it a standout decorative element. The cream-colored base provides a neutral backdrop that complements a wide range of interior styles. Adorned with playful tassels on each corner, this pillow brings a touch of bohemian flair to your space. Its square shape and generous size make it ideal for layering with other pillows or as a standalone accent piece.
+  price: 9.99
+  image: c5e5d6d0-4baf-4840-929b-d36261c019a7.jpg
+  gender_affinity: F
+  where_visible: UI
+- id: 93fabcf9-6ead-410f-ae72-ef5d4d70b253
+  current_stock: 15
+  name: Karaca Home Happy Place Filled Throw Pillow
+  category: homedecor
+  style: cushion
+  description: Introducing the Karaca Home Happy Place Filled Throw Pillow, a charming and uplifting addition to your home decor. This delightful throw pillow features a simple yet powerful message that transforms any space into your personal sanctuary. The bold, black typography stands out beautifully against the clean white background, making it easy to read and visually striking. The black piping along the edges adds a refined touch, framing the message and giving the pillow a polished look. This design detail allows the pillow to complement both modern and traditional decor styles with ease.
+  price: 12.99
+  image: 93fabcf9-6ead-410f-ae72-ef5d4d70b253.jpg
+  gender_affinity: F
+  where_visible: UI
