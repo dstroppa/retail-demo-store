@@ -22,7 +22,7 @@
   },
   "/products/id/:product_id": {
     "type": "object",
-    "required": ["id", "url", "sk", "name", "category", "style", "description", "aliases", "price", "image", "featured", "current_stock"],
+    "required": ["id", "url", "sk", "name", "category", "style", "description", "price", "image", "featured", "current_stock"],
     "properties": {
         "id": {"type": "string"},
         "url": {"type": "string"},

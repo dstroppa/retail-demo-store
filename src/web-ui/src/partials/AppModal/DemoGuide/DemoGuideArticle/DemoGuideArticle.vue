@@ -7,6 +7,7 @@ import { Articles } from '../config';
 import UserPersonalization from './articles/UserPersonalization.vue';
 import SIMSRecommendations from './articles/SIMSRecommendations.vue';
 import SimilarItemsRecommendations from './articles/SimilarItemsRecommendations.vue';
+import SimilarItemsWithTheme from './articles/SimilarItemsWithTheme.vue';
 import PersonalizedRanking from './articles/PersonalizedRanking.vue';
 import CustomersWhoViewedXAlsoViewed from './articles/CustomersWhoViewedXAlsoViewed.vue';
 import FrequentlyBoughtTogether from './articles/FrequentlyBoughtTogether.vue';
@@ -28,6 +29,8 @@ import Datasets from './articles/Datasets.vue';
 import ShopperPersonas from './articles/ShopperPersonas.vue';
 import EnablingShopperProfiles from './articles/EnablingShopperProfiles.vue';
 import LocationServices from './articles/LocationServices.vue';
+import PersonalizedProductDescriptions from './articles/PersonalizedProductDescriptions.vue'
+import RoomGenerator from './articles/RoomGenerator.vue'
 
 export default {
   name: 'DemoGuideArticle',
@@ -43,6 +46,8 @@ export default {
           return SIMSRecommendations;
         case Articles.SIMILAR_ITEMS_RECOMMENDATIONS:
           return SimilarItemsRecommendations;
+        case Articles.SIMILAR_ITEMS_WITH_THEME:
+          return SimilarItemsWithTheme;
         case Articles.PERSONALIZED_RANKING:
           return PersonalizedRanking;
         case Articles.ECOMM_CUSTOMERS_WHO_VIEWED_X:
@@ -85,6 +90,10 @@ export default {
           return EnablingShopperProfiles
         case Articles.LOCATION_SERVICES:
           return LocationServices
+        case Articles.PERSONALIZED_PRODUCT:
+          return PersonalizedProductDescriptions
+        case Articles.ROOM_GENERATOR:
+          return RoomGenerator
       }
 
       throw new Error(`Invalid article id: ${this.article}`);

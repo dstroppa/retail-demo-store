@@ -18,6 +18,7 @@ import { Articles } from '@/partials/AppModal/DemoGuide/config';
 const Services = {
   Pinpoint: 'Pinpoint',
   Personalize: 'Personalize',
+  Bedrock: 'Bedrock',
 };
 
 export default {
@@ -39,12 +40,15 @@ export default {
         case Articles.PERSONALIZED_RANKING:
         case Articles.SIMS_RECOMMENDATIONS:
         case Articles.SIMILAR_ITEMS_RECOMMENDATIONS:
+        case Articles.SIMILAR_ITEMS_WITH_THEME:
         case Articles.ECOMM_CUSTOMERS_WHO_VIEWED_X:
         case Articles.ECOMM_FBT:
         case Articles.ECOMM_POPULAR_BY_PURCHASES:
         case Articles.ECOMM_POPULAR_BY_VIEWS:
         case Articles.ECOMM_RFY:
           return Services.Personalize;
+        case Articles.PERSONALIZED_PRODUCT:
+          return Services.Bedrock;
       }
 
       throw new Error('Invalid article passed to DemoGuideBadge');
@@ -55,6 +59,8 @@ export default {
           return '/pinpoint.svg';
         case Services.Personalize:
           return '/personalize.svg';
+        case Services.Bedrock:
+          return '/bedrock.svg';
       }
 
       throw new Error('Invalid article passed to DemoGuideBadge');
@@ -71,6 +77,8 @@ export default {
           return 'Learn more about similar item (SIMS) recommendations';
         case Articles.SIMILAR_ITEMS_RECOMMENDATIONS:
           return 'Learn more about similar items recommendations with personalized ranking';
+        case Articles.SIMILAR_ITEMS_WITH_THEME:
+          return 'Learn more about similar items with generative AI theme';
         case Articles.ECOMM_CUSTOMERS_WHO_VIEWED_X:
           return 'Learn more about customers who viewed X viewed';
         case Articles.ECOMM_FBT:
@@ -83,6 +91,8 @@ export default {
           return 'Learn more about recommended for you';
         case Articles.PERSONALIZED_EMAILS:
           return 'Learn more about the abandoned shopping cart email notifications';
+        case Articles.PERSONALIZED_PRODUCT:
+          return 'Learn more about personalized product descriptions';
       }
 
       throw new Error('Invalid article passed to DemoGuideBadge');
@@ -93,6 +103,8 @@ export default {
           return 'Amazon Pinpoint';
         case Services.Personalize:
           return 'Amazon Personalize';
+        case Services.Bedrock:
+          return 'Amazon Bedrock';
       }
 
       throw new Error('Invalid article passed to DemoGuideBadge');

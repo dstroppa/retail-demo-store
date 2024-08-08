@@ -62,9 +62,6 @@ Parameters:
   IdentityPoolId:
     Type: String
 
-  StackBucketName:
-    Type: String
-
   Subnets:
     Type: String
 
@@ -108,6 +105,10 @@ Parameters:
     Type: String
     Default: none
 
+  PersonalisedProductsTable:
+    Type: String
+    Default: none
+
   ParameterPersonalizeEventTrackerId:
     Type: String
     Description: SSM parameter name for the Personalize event tracking ID
@@ -132,18 +133,14 @@ Parameters:
     Type: String
     Description: Whether to use created IVS streams or those hosted by AWS.
 
-  ParentStackName:
-    Type: String
-    Description: Parent stack name
-
   EvidentlyProjectName:
     Type: String
     Description: Evidently project name
-    
+
   LoggingBucketName:
     Type: String
     Description: S3 Bucket For logging
-  
+
   LambdaVpcSecurityGroup:
     Type: String
 
@@ -166,7 +163,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -175,6 +171,7 @@ Resources:
         ProductsTable: !Ref ProductsTable
         CategoriesTable: !Ref CategoriesTable
         ExperimentStrategyTable: !Ref ExperimentStrategyTable
+        PersonalisedProductsTable: !Ref PersonalisedProductsTable
         ParameterPersonalizeEventTrackerId: !Ref ParameterPersonalizeEventTrackerId
         ParameterAmplitudeApiKey: !Ref ParameterAmplitudeApiKey
         ParameterOptimizelySdkKey: !Ref ParameterOptimizelySdkKey
@@ -182,7 +179,6 @@ Resources:
         DeleteRepositoryLambdaArn: !GetAtt DeleteRepositoryLambdaFunction.Arn
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
 
@@ -203,7 +199,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -217,10 +212,9 @@ Resources:
         DeleteRepositoryLambdaArn: !GetAtt DeleteRepositoryLambdaFunction.Arn
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
-        
+
   CartsService:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -238,7 +232,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -254,10 +247,9 @@ Resources:
         CartsTable: !Ref CartsTable
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
-        
+
   OrdersService:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -275,7 +267,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -289,10 +280,9 @@ Resources:
         OrdersTable: !Ref OrdersTable
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
-        
+
   SearchService:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -310,7 +300,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -324,7 +313,6 @@ Resources:
         DeleteRepositoryLambdaArn: !GetAtt DeleteRepositoryLambdaFunction.Arn
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
 
@@ -345,7 +333,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -359,7 +346,6 @@ Resources:
         DeleteRepositoryLambdaArn: !GetAtt DeleteRepositoryLambdaFunction.Arn
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
 
@@ -380,7 +366,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -394,7 +379,6 @@ Resources:
         DeleteRepositoryLambdaArn: !GetAtt DeleteRepositoryLambdaFunction.Arn
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
 
@@ -415,7 +399,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -431,7 +414,6 @@ Resources:
         DeleteRepositoryLambdaArn: !GetAtt DeleteRepositoryLambdaFunction.Arn
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
 
@@ -452,7 +434,6 @@ Resources:
         UserPoolId: !Ref UserPoolId
         UserPoolClientId: !Ref UserPoolClientId
         IdentityPoolId: !Ref IdentityPoolId
-        StackBucketName: !Ref StackBucketName
         Subnets: !Ref Subnets
         VpcId: !Ref VpcId
         VpcCidr: !Ref VpcCidr
@@ -467,10 +448,9 @@ Resources:
         UseDefaultIVSStreams: !If [UseDefaultIVSStreams, true, false]
         WebRootUrl: !Ref WebRootUrl
         ImageRootUrl: !Ref ImageRootUrl
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
         EvidentlyProjectName: !Ref EvidentlyProjectName
         LoggingBucketName: !Ref LoggingBucketName
-        
+
   # Pinpoint personalized messaging customization
   PinpointPersonalize:
     Type: AWS::CloudFormation::Stack
@@ -483,20 +463,9 @@ Resources:
         RecommendationsServiceDNSName: !GetAtt RecommendationsService.Outputs.ServiceDNSName
         OffersServiceDNSName: !GetAtt OffersService.Outputs.ServiceDNSName
         PinpointAppId: !Ref PinpointAppId
-        Uid: !Sub ${ParentStackName}-${AWS::Region}
+        Uid: !Sub ${AWS::StackName}-${AWS::Region}
         LambdaVpcSecurityGroup: !Ref LambdaVpcSecurityGroup
         LambdaVpcSubnets: !Ref Subnets
-
-  # Custom resources
-  CustomResources:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Sub https://s3.amazonaws.com/${ResourceBucket}/${ResourceBucketRelativePath}cloudformation-templates/services/ProductsCustom.yaml
-      Parameters:
-        ResourceBucket: !Ref ResourceBucket
-        ResourceBucketRelativePath: !Ref ResourceBucketRelativePath
-        ProductsTable: !Ref ProductsTable
-        CategoriesTable: !Ref CategoriesTable
 
   ####################### Delete Repository Custom Resource #######################
 
@@ -541,7 +510,7 @@ Resources:
             cfnresponse.send(event, context, responseStatus, responseData)
 
       Handler: index.handler
-      Runtime: python3.7
+      Runtime: python3.12
       Timeout: 30
       Role: !GetAtt DeleteRepositoryLambdaExecutionRole.Arn
 
@@ -586,7 +555,7 @@ Outputs:
   UsersServiceUrl:
     Description: Users load balancer URL.
     Value: !GetAtt UsersService.Outputs.ServiceUrl
-  
+
   UsersServiceELBListener:
     Description: Users Service ELB Arn
     Value: !GetAtt UsersService.Outputs.ServiceELBListener

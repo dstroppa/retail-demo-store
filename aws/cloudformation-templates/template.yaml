@@ -1,5 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::LanguageExtensions'
 
 # Do NOT remove the RETAIL_DS prefix in the template description below!
 Description: >
@@ -35,6 +36,16 @@ Metadata:
           - PinpointEmailFromName
           - PinpointSMSLongCode
       - Label:
+          default: "Generative AI Optional Integrations"
+        Parameters:
+          - BedrockProductPersonalization
+          - DeployRoomMakeoverDemo
+          - SageMakerEndpointName
+          - EnableSageMakerAutoScaling
+          - SageMakerScalingMinCapacity
+          - SageMakerScalingMaxCapacity
+          - OpenSearchEmbeddingIndex
+      - Label:
           default: "Use default IVS streams"
         Parameters:
           - UseDefaultIVSStreams
@@ -69,7 +80,11 @@ Metadata:
           - mParticleS2SApiKey
           - mParticleS2SSecretKey
           - GoogleAnalyticsMeasurementId
-          - ACMCertificateArn
+      - Label:
+          default: "Custom Cloudfront domain name (optional)"
+        Parameters:
+          - CloudfrontCustomDomain
+          - ACMCertificateArn          
       - Label:
           default: "Fenix Commerce EDD Integration"
         Parameters:
@@ -166,6 +181,16 @@ Metadata:
         default: "Fenix Commerce enable EDD on Checkoutpage"
       FenixXapiKey:
         default: "Fenix Commerce X-Api-Key"
+      BedrockProductPersonalization:
+        default: "Enable Amazon Bedrock product personalization"
+      DeployRoomMakeoverDemo:
+        default: "Deploy Room Makeover Demo"
+      EnableSageMakerAutoScaling:
+        default: Enable Auto scaling for SageMaker Asynchronous endpoint        
+      SageMakerScalingMinCapacity:
+        default: Minimum capacity for SageMaker endpoint.
+      SageMakerScalingMaxCapacity:
+        default: Maximum capacity for SageMaker endpoint
 
 Parameters:
   ResourceBucket:
@@ -179,6 +204,19 @@ Parameters:
     Description: >
       Optional path in the Deployment Resources Staging bucket where the deployment resources are stored (e.g. path/path2/).
       Leave blank if resources are at the root of the Staging Resource Bucket. If specified, MUST end with '/'.
+    Default: ''
+
+  ResourceBucketImages:
+    Type: String
+    Description: >
+      (Leave empty in most cases) only specify if your product images are stored in a different bucket
+    Default: ''
+
+  ResourceBucketImagesPrefix:
+    Type: String
+    Description: >
+      (Leave empty in most cases) Images bucket prefix only specify if your product images are stored in a different bucket
+    Default: ''
 
   CreateOpenSearchServiceLinkedRole:
     Type: String
@@ -224,7 +262,8 @@ Parameters:
       If you are linking and deploying from a private fork of the Retail Demo Store repository in your GitHub account, a GitHub Personal
       Access Token is required. Otherwise, leave blank. Be sure that your token has the "repo", "repo:status", and "admin:repo_hook" permission scopes.
     NoEcho: true
-
+    Default: ''
+    
   PreIndexOpenSearch:
     Type: String
     Description: >
@@ -263,6 +302,7 @@ Parameters:
     Description: >
       Email address to use as Reply-To when sending emails from Pinpoint. This parameter is required when 'Auto-Configure Pinpoint'
       is set to 'Yes'.
+    Default: ''
 
   PinpointEmailFromName:
     Type: String
@@ -287,16 +327,19 @@ Parameters:
     Description: >
       A dedicated long code (i.e. a phone number) obtained for Amazon Pinpoint to send and receive messages at. Be sure to enable two way SMS for this long code using Pinpoint. Follow steps 2 and 3 in the Messaging workshop(https://github.com/aws-samples/retail-demo-store/blob/master/workshop/4-Messaging/4.1-Pinpoint.ipynb)
       to get a long code. This parameter only applies when 'Auto-Configure Pinpoint' is set to 'Yes'. Enter the number along with the country code and without any spaces or brackets. For Example: enter "+1XXXXXXXXXX" for a long code based in the United States.
+    Default: ''
 
   AmplitudeApiKey:
     Type: String
     Description: Amplitude API key for integrated product analytics and A/B testing results (optional).
     NoEcho: true
+    Default: ''
 
   OptimizelySdkKey:
     Type: String
     Description: Optimizely SDK key for experimentation (optional).
     NoEcho: true
+    Default: ''
 
   DeployLocationServices:
     Type: String
@@ -320,18 +363,21 @@ Parameters:
       This demonstration store contains an example of signing Amazon Pay payloads for integration with an Amazon Pay sandbox.
       This parameter is the Public Key ID for the Amazon Pay sandbox account being used.
       For more information see "Amazon Pay Integration" under the README file in the amazon-pay-signing subfolder in the repository.
+    Default: ''
 
   AmazonPayStoreId:
     Type: String
     Description: >
       The Store ID of the Amazon Pay sandbox account being used.
       For more information see "Amazon Pay Integration" under the README file in the amazon-pay-signing subfolder in the repository.
+    Default: ''
 
   AmazonPayMerchantId:
     Type: String
     Description: >
       Merchant ID of the Amazon Pay sandbox account being used.
       For more information see "Amazon Pay Integration" under the README file in the amazon-pay-signing subfolder in the repository.
+    Default: ''
 
   AmazonPayPrivateKey:
     Type: String
@@ -340,6 +386,7 @@ Parameters:
       You will need to copy the whole contents of the .pem file into this parameter.
       For more information see "Amazon Pay Integration" under the README file in the amazon-pay-signing subfolder in the repository.
     NoEcho: true
+    Default: ''
 
   AlexaSkillId:
     Type: String
@@ -348,12 +395,14 @@ Parameters:
       of this CloudFormation stack. The back-end Lambda supports the C-Store demo allowing hands-free location
       based searching with Location Service (if enabled), integration with the Retail Demo Store back-end, online recommendations,
       and checkout.
+    Default: ''
 
   AlexaDefaultSandboxEmail:
     Type: String
     Description: >
-      Fallback email address to receive order confirmation emails.  This will be used until the steps are followed to enable Alexa to authenticate with Cognito, 
+      Fallback email address to receive order confirmation emails.  This will be used until the steps are followed to enable Alexa to authenticate with Cognito,
       after which it will be able to retrieve the user's details.
+    Default: ''
 
   IncludeSegmentDependencies:
     Type: String
@@ -369,6 +418,7 @@ Parameters:
     Description: >
       Segment write key for real-time data collection (optional). Be sure the Segment resources are deployed (above) if you specify a write key.
     NoEcho: true
+    Default: ''
 
   IncludemParticleDependencies:
     Type: String
@@ -384,40 +434,52 @@ Parameters:
     Description: >
       mParticle organization ID from your workspace.
     NoEcho: true
+    Default: ''
 
   mParticleApiKey:
     Type: String
     Description: >
       mParticle event API Key for your mParticle tenant.
     NoEcho: true
+    Default: ''
 
   mParticleSecretKey:
     Type: String
     Description: >
       mParticle event API secret key coupled with your API key.
     NoEcho: true
+    Default: ''
 
   mParticleS2SApiKey:
     Type: String
     Description: >
       mParticle server to server API Key for your mParticle tenant.
     NoEcho: true
+    Default: ''
 
   mParticleS2SSecretKey:
     Type: String
     Description: >
       mParticle server to server secret key coupled with your API key.
     NoEcho: true
+    Default: ''
 
   GoogleAnalyticsMeasurementId:
     Type: String
     Description: >
       Google Analytics Measurement Identifier (optional). If specified, the Google Analytics integration in the web application is activated and
       events are sent to the data stream associated with the Measurement ID.
+    Default: ''
 
   ACMCertificateArn:
     Type: String
     Description: ACM Certificate ARN for CloudFront WebUICDN (Optional, only needed for custom domain in CloudFront)
+    Default: ''
+
+  CloudfrontCustomDomain:
+    Type: String
+    Description : OPTIONAL only enter if you plan to use a custom domain named (linked to ACMCertificateArn)
+    Default: ''
 
   FenixZipDetectUrl:
     Type: String
@@ -470,6 +532,72 @@ Parameters:
     Default: 'nr50Qdu7FM94n2X1GYuhA8cFzyvdYTJ5Qka4XMOd'
     NoEcho: true
 
+  BedrockProductPersonalization:
+    Type: String
+    Description: Flag to enable product personalization in web-ui feature driven by Bedrock. Amazon Bedrock users need to request access to models before they are available for use. To demo Personalised Product Descriptions make sure to enable access to Anthropic's Claude v2 via the Amazon Bedrock Management Console. Check README Notes for more details.
+    AllowedValues:
+      - 'Yes'
+      - 'No'
+    Default: 'No'
+
+  SourceImagesPackage:
+    Type: String
+    Description : Full url to the images.tar.gz address (only change if you plan to upload custom pictures)
+    Default: https://code.retaildemostore.retail.aws.dev/images.tar.gz
+
+  DeployRoomMakeoverDemo:
+    Type: String
+    Description: Flag to deploy the Room Makeover demo. Amazon Bedrock users need to request access to models before they are available for use. To demo the Room Makerover functionality make sure to enable access to Anthropic's Claude v3 & Titan Embeddings via the Amazon Bedrock Management Console. Check README Notes for more details.
+    AllowedValues:
+      - 'Yes'
+      - 'No'
+    Default: 'No'
+  
+  EnableSageMakerAutoScaling:
+    Type: String
+    Description: Enable Auto scaling for the SageMaker Asyncronous endpoint
+    AllowedValues:
+      - "Yes"
+      - "No"
+    Default: "Yes"
+
+  SageMakerScalingMaxCapacity:
+    Type: Number
+    Description: Maximum capacity to scale the SageMaker Asyncronous endpoint
+    MinValue: 1
+    Default: 1
+
+  SageMakerScalingMinCapacity:
+    Type: Number
+    Description: SageMaker Asynchronous endpoints can be scaled to zero.  The endpoint will scale up from zero and room requests will resume execution when there is an endpoint to invoke.
+    MinValue: 0
+    Default: 0
+  
+  SageMakerEndpointName:
+    Type: String
+    Description: The SageMaker async endpoint name used for image generation
+    Default: controlnet-depth-sdxl
+  
+  OpenSearchEmbeddingIndex:
+    Type: String
+    Description: Name of the embedding index
+    Default: embproducts
+
+
+Mappings:
+# Regions that support Amazon Bedrock and the required models of Room Maker demo: Claude 3 Haiku, Titan Multimodal Embeddings G1
+  BedrockRegionMap: 
+    us-east-1: 
+      SupportsRequiredModels: "Yes"
+    us-west-2: 
+      SupportsRequiredModels: "Yes"
+    ap-south-1: 
+      SupportsRequiredModels: "Yes"
+    ap-southeast-2: 
+      SupportsRequiredModels: "Yes"
+    eu-west-3: 
+      SupportsRequiredModels: "Yes"
+
 Conditions:
   DeploySegmentResources: !Equals
     - !Ref IncludeSegmentDependencies
@@ -492,6 +620,17 @@ Conditions:
       - !Not [!Equals [!Ref AmazonPayPublicKeyId, ""]]
 
   DeployAlexaEndpoint: !Not [!Equals [!Ref AlexaSkillId, ""]]
+
+  ConditionCustomDomain: !Not
+    - !Equals [!Ref CloudfrontCustomDomain, ""]
+
+  RegionSupportsRequiredBedrockModels: !Equals
+    - !FindInMap [BedrockRegionMap, !Ref 'AWS::Region', 'SupportsRequiredModels', DefaultValue: 'No']
+    - 'Yes'
+
+  DeployRoomMakeoverStack: !And
+    - !Equals [!Ref DeployRoomMakeoverDemo, "Yes"]
+    - !Condition RegionSupportsRequiredBedrockModels
 
 Resources:
   # Base Resources
@@ -519,15 +658,10 @@ Resources:
         LocationResourcePrefix: !Ref AWS::StackName
         GitHubUser: !Ref GitHubUser
         GitHubBranch: !Ref GitHubBranch
-        FenixZipDetectUrl: !Ref FenixZipDetectUrl
-        FenixTenantId: !Ref FenixTenantId
-        FenixEddEndpoint: !Ref FenixEddEndpoint
-        FenixMonetaryValue: !Ref FenixMonetaryValue
-        FenixEnabledPdp: !Ref FenixEnabledPdp
-        FenixEnabledCart: !Ref FenixEnabledCart
-        FenixEnabledCheckout: !Ref FenixEnabledCheckout
-        FenixXapiKey: !Ref FenixXapiKey
         ACMCertificateArn: !Ref ACMCertificateArn
+        ResourceBucketImages: !Ref ResourceBucketImages
+        ResourceBucketImagesPrefix: !Ref ResourceBucketImagesPrefix
+        SourceImagesPackage: !Ref SourceImagesPackage
 
   # Services Resources
   Services:
@@ -545,7 +679,6 @@ Resources:
         UserPoolId: !GetAtt Base.Outputs.UserPoolId
         UserPoolClientId: !GetAtt Base.Outputs.UserPoolClientId
         IdentityPoolId: !GetAtt Base.Outputs.IdentityPoolId
-        StackBucketName: !GetAtt Base.Outputs.StackBucketName
         Subnets: !GetAtt Base.Outputs.Subnets
         VpcId: !GetAtt Base.Outputs.VpcId
         VpcCidr: !GetAtt Base.Outputs.VpcCidr
@@ -558,17 +691,21 @@ Resources:
         CartsTable: !GetAtt Base.Outputs.CartsTable
         OrdersTable: !GetAtt Base.Outputs.OrdersTable
         ExperimentStrategyTable: !GetAtt Base.Outputs.ExperimentStrategyTable
+        PersonalisedProductsTable: !GetAtt Base.Outputs.PersonalisedProductsTable
         ParameterPersonalizeEventTrackerId: !GetAtt Base.Outputs.ParameterPersonalizeEventTrackerId
         ParameterAmplitudeApiKey: !GetAtt Base.Outputs.ParameterAmplitudeApiKey
         ParameterOptimizelySdkKey: !GetAtt Base.Outputs.ParameterOptimizelySdkKey
         CleanupBucketLambdaArn: !GetAtt CleanupBucket.Outputs.LambdaFunctionArn
         ParameterIVSVideoChannelMap: !GetAtt Base.Outputs.ParameterIVSVideoChannelMap
-        WebRootUrl: !GetAtt Base.Outputs.WebUICDNURL
+        WebRootUrl: !If 
+          - ConditionCustomDomain
+          - !Sub https://${CloudfrontCustomDomain}
+          - !GetAtt Base.Outputs.WebUICDNURL
         UseDefaultIVSStreams: !Ref UseDefaultIVSStreams
-        ImageRootUrl: !Sub
-          - "${RootURL}/images/"
-          - RootURL: !GetAtt Base.Outputs.WebUICDNURL
-        ParentStackName: !Ref AWS::StackName
+        ImageRootUrl: !If 
+          - ConditionCustomDomain
+          - !Sub https://${CloudfrontCustomDomain}/images/
+          - !Sub ${Base.Outputs.WebUICDNURL}/images/
         EvidentlyProjectName: !GetAtt Base.Outputs.EvidentlyProjectName
         LoggingBucketName: !GetAtt Base.Outputs.LoggingBucketName
         LambdaVpcSecurityGroup: !GetAtt Base.Outputs.PrivateVPCSecurityGroup
@@ -625,7 +762,8 @@ Resources:
         FenixEnabledCart: !Ref FenixEnabledCart
         FenixEnabledCheckout: !Ref FenixEnabledCheckout
         FenixXapiKey: !Ref FenixXapiKey
-
+        BedrockProductPersonalization: !Ref BedrockProductPersonalization
+        RoomImagesBucket: !If [DeployRoomMakeoverStack, !GetAtt RoomMakeover.Outputs.RoomImagesBucket, '']
         LocationResourceName:
           !If [
             DeployLocationStack,
@@ -657,8 +795,6 @@ Resources:
     Properties:
       TemplateURL: !Sub https://s3.amazonaws.com/${ResourceBucket}/${ResourceBucketRelativePath}cloudformation-templates/swagger-ui-pipeline.yaml
       Parameters:
-        ResourceBucket: !Ref ResourceBucket
-        ResourceBucketRelativePath: !Ref ResourceBucketRelativePath
         SwaggerUICDN: !GetAtt Base.Outputs.SwaggerUICDN
         SwaggerUIBucketName: !GetAtt Base.Outputs.SwaggerUIBucketName
         SwaggerUIRootUrl: !GetAtt Base.Outputs.SwaggerUICDNURL
@@ -710,7 +846,12 @@ Resources:
         OrdersServiceExternalUrl: !GetAtt Services.Outputs.OrdersServiceUrl
         OffersServiceExternalUrl: !GetAtt Services.Outputs.OffersServiceUrl
         UsersServiceExternalUrl: !GetAtt Services.Outputs.UsersServiceUrl
-        WebURL: !GetAtt Base.Outputs.WebUICDNURL
+        WebURL:
+          !If [
+            ConditionCustomDomain,
+            !Sub 'https://${CloudfrontCustomDomain}' ,
+            !GetAtt Base.Outputs.WebUICDNURL
+          ]
         LambdaVpcSecurityGroup: !GetAtt Base.Outputs.PrivateVPCSecurityGroup
         LambdaVpcSubnets: !GetAtt Base.Outputs.Subnets
 
@@ -725,7 +866,12 @@ Resources:
         AmazonPayPublicKeyId: !Ref AmazonPayPublicKeyId
         AmazonPayStoreId: !Ref AmazonPayStoreId
         AmazonPayPrivateKey: !Ref AmazonPayPrivateKey
-        WebURL: !GetAtt Base.Outputs.WebUICDNURL
+        WebURL: 
+          !If [
+            ConditionCustomDomain,
+            !Sub 'https://${CloudfrontCustomDomain}' ,
+            !GetAtt Base.Outputs.WebUICDNURL
+          ]
 
   Alexa:
     Type: AWS::CloudFormation::Stack
@@ -754,7 +900,6 @@ Resources:
 
   # Deployment support
   DeploymentSupport:
-    DependsOn: [Services, Base] # Delay towards end of deployment so that ES domain and DNS changes become consistent
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub https://s3.amazonaws.com/${ResourceBucket}/${ResourceBucketRelativePath}cloudformation-templates/deployment-support.yaml
@@ -765,6 +910,7 @@ Resources:
         PreCreatePersonalizeResources: !Ref PreCreatePersonalizeResources
         Subnet1: !GetAtt Base.Outputs.Subnet1
         Subnet2: !GetAtt Base.Outputs.Subnet2
+        LambdaVpcSecurityGroup: !GetAtt Base.Outputs.PrivateVPCSecurityGroup
         OpenSearchSecurityGroupId: !GetAtt Base.Outputs.OpenSearchSecurityGroupId
         OpenSearchDomainArn: !GetAtt Base.Outputs.OpenSearchDomainArn
         OpenSearchDomainEndpoint: !GetAtt Base.Outputs.OpenSearchDomainEndpoint
@@ -781,6 +927,7 @@ Resources:
         ProductsServiceExternalUrl: !GetAtt Services.Outputs.ProductsServiceUrl
         DeployPersonalizedOffersCampaign: !Ref DeployPersonalizedOffersCampaign
         PersonalizeRoleArn: !GetAtt Base.Outputs.PersonalizeRoleArn
+        StackBucketName: !GetAtt Base.Outputs.StackBucketName
 
   # Cleanup bucket function
   CleanupBucket:
@@ -814,6 +961,49 @@ Resources:
         Uid: !Sub ${AWS::StackName}-${AWS::Region}
         LambdaVpcSecurityGroup: !GetAtt Base.Outputs.PrivateVPCSecurityGroup
         LambdaVpcSubnets: !GetAtt Base.Outputs.Subnets
+
+  RoomMakeover:
+    Type: AWS::CloudFormation::Stack
+    Condition: DeployRoomMakeoverStack
+    Properties:
+      TemplateURL: !Sub https://s3.amazonaws.com/${ResourceBucket}/${ResourceBucketRelativePath}cloudformation-templates/room-generator.yaml
+      Parameters:
+        LambdaVpcSecurityGroup: !GetAtt Base.Outputs.PrivateVPCSecurityGroup
+        LambdaVpcSubnets: !GetAtt Base.Outputs.Subnets
+        ResourceBucket: !Ref ResourceBucket
+        ResourceBucketRelativePath: !Ref ResourceBucketRelativePath
+        LoggingBucketName: !GetAtt Base.Outputs.LoggingBucketName
+        CleanupBucketLambdaArn: !GetAtt CleanupBucket.Outputs.LambdaFunctionArn
+        OpenSearchDomainEndpoint: !GetAtt Base.Outputs.OpenSearchDomainEndpoint
+        ApiGatewayId: !GetAtt ApiGateway.Outputs.ApiGatewayId
+        LambdaAuthorizer: !GetAtt ApiGateway.Outputs.ApiGatewayAuthorizer
+        WebUIBucketName: !GetAtt Base.Outputs.WebUIBucketName
+        WebURL: !If 
+          - ConditionCustomDomain
+          - !Sub https://${CloudfrontCustomDomain}
+          - !GetAtt Base.Outputs.WebUICDNURL        
+        CognitoAuthorizedRole: !GetAtt Base.Outputs.CognitoAuthorizedRole
+        SageMakerEndpointName: !Ref SageMakerEndpointName
+        EnableSageMakerAutoScaling: !Ref EnableSageMakerAutoScaling
+        SageMakerScalingMaxCapacity: !Ref SageMakerScalingMaxCapacity
+        SageMakerScalingMinCapacity: !Ref SageMakerScalingMinCapacity
+        SourceDeploymentType: !Ref SourceDeploymentType
+        GitHubRepo: !Ref GitHubRepo
+        GitHubBranch: !Ref GitHubBranch
+        GitHubToken: !Ref GitHubToken
+        GitHubUser: !Ref GitHubUser     
+
+  ApiGatewayDeploy:
+    Type: AWS::CloudFormation::Stack
+    DependsOn:
+      - ApiGateway
+    Properties:
+      TemplateURL: !Sub https://s3.amazonaws.com/${ResourceBucket}/${ResourceBucketRelativePath}cloudformation-templates/apigateway-deploy.yaml
+      Parameters:
+        ApiGatewayId: !GetAtt ApiGateway.Outputs.ApiGatewayId
+      Tags:
+        - Key: ConditionalDependsOn
+          Value: !If [DeployRoomMakeoverStack, !Ref RoomMakeover, Ignored]
 
 Outputs:
   UserPoolId:
@@ -903,7 +1093,7 @@ Outputs:
   OffersServiceUrl:
     Description: Offers service load balancer URL.
     Value: !GetAtt Services.Outputs.OffersServiceUrl
-  
+
   APIEndpoint:
     Value: !GetAtt ApiGateway.Outputs.APIEndpoint
 
@@ -917,6 +1107,9 @@ Outputs:
         # Products service
         DDB_TABLE_PRODUCTS=${Base.Outputs.ProductsTable}
         DDB_TABLE_CATEGORIES=${Base.Outputs.CategoriesTable}
+        DDB_TABLE_CARTS=${Base.Outputs.CartsTable}
+        DDB_TABLE_ORDERS=${Base.Outputs.OrdersTable}
+        DDB_TABLE_PERSONALISED_PRODUCTS=${Base.Outputs.PersonalisedProductsTable}
         IMAGE_ROOT_URL="${Base.Outputs.WebUICDNURL}/images/"
         WEB_ROOT_URL="${Base.Outputs.WebUICDNURL}"
 
@@ -937,7 +1130,7 @@ Outputs:
         OPENSEARCH_DOMAIN_SCHEME=https
         OPENSEARCH_DOMAIN_HOST="${Base.Outputs.OpenSearchDomainEndpoint}"
         OPENSEARCH_DOMAIN_PORT=9200
-      
+
         # Evidently
         EVIDENTLY_PROJECT_NAME="${Base.Outputs.EvidentlyProjectName}"
 

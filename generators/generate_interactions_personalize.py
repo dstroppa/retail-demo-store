@@ -59,7 +59,7 @@ NORMALISE_PER_PRODUCT_WEIGHT = 1.0
 DISCOUNT_PROBABILITY = 0.2
 DISCOUNT_PROBABILITY_WITH_PREFERENCE = 0.5
 
-IN_PRODUCTS_FILENAME = "src/products/src/products-service/data/products.yaml"
+IN_PRODUCTS_FILENAME = "src/products/data/products.yaml"
 IN_USERS_FILENAMES = ["src/users/src/users-service/data/users.json.gz",
                       "src/users/src/users-service/data/cstore_users.json.gz"]
 
@@ -104,17 +104,18 @@ def generate_user_items(out_users_filename, out_items_filename, in_users_filenam
 
     users_df = pd.DataFrame(users)
 
-    products_dataset_df = products_df[['id','price','category','style','description','gender_affinity','promoted']]
+    products_dataset_df = products_df[['id','price','category','style','name','description','gender_affinity','promoted']]
     products_dataset_df = products_dataset_df.rename(columns = {'id':'ITEM_ID',
                                                             'price':'PRICE',
                                                             'category':'CATEGORY_L1',
                                                             'style':'CATEGORY_L2',
+                                                            'name': 'PRODUCT_NAME',
                                                             'description':'PRODUCT_DESCRIPTION',
                                                             'gender_affinity':'GENDER',
                                                             'promoted': 'PROMOTED'})
     # Since GENDER column requires a value for all rows, default all nulls to "Any"
-    products_dataset_df['GENDER'].fillna(GENDER_ANY, inplace = True)
-    products_dataset_df['PROMOTED'].fillna(False, inplace = True)
+    products_dataset_df['GENDER']=products_dataset_df['GENDER'].fillna(GENDER_ANY)
+    products_dataset_df['PROMOTED'] = products_dataset_df['PROMOTED'].astype(str).fillna(False)
     products_dataset_df['PROMOTED'] = products_dataset_df['PROMOTED'].replace({True: 'Y', False: 'N'})
     products_dataset_df.to_csv(out_items_filename, index=False)
 
@@ -157,7 +158,7 @@ def generate_interactions(out_interactions_filename, users_df, products_df):
     average_product_price = int(products_df.price.mean())
     print('Average product price: ${:.2f}'.format(average_product_price))
 
-    if seconds_increment <= 0: 
+    if seconds_increment <= 0:
         raise AssertionError(f"Should never happen: {seconds_increment} <= 0")
 
     print('Minimum interactions to generate: {}'.format(min_interactions))

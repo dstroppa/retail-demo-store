@@ -16,6 +16,7 @@ export const Articles = {
   USER_PERSONALIZATION: 'user-personalization',
   SIMS_RECOMMENDATIONS: 'sims-recommendations',
   SIMILAR_ITEMS_RECOMMENDATIONS: 'similar-items-recommendations',
+  SIMILAR_ITEMS_WITH_THEME: 'similar-items-with-theme',
   PERSONALIZED_RANKING: 'personalized-ranking',
   USER_SEGMENTATION: 'user-segmentation',
   ECOMM_CUSTOMERS_WHO_VIEWED_X: 'customers-who-viewed-x-also-viewed',
@@ -36,13 +37,16 @@ export const Articles = {
   DATASETS: 'datasets',
   SHOPPER_PERSONAS: 'shopper-personas',
   ENABLING_SHOPPER_PROFILES: 'enabling-shopper-profiles',
-  LOCATION_SERVICES: 'location-services'
+  LOCATION_SERVICES: 'location-services',
+  PERSONALIZED_PRODUCT: 'personalized-product',
+  ROOM_GENERATOR: 'room-generator',
 };
 
 export const articleTitles = {
   [Articles.USER_PERSONALIZATION]: 'User Personalization',
   [Articles.SIMS_RECOMMENDATIONS]: 'Similar Item (SIMS) Recommendations',
   [Articles.SIMILAR_ITEMS_RECOMMENDATIONS]: 'Similar Items Recommendations',
+  [Articles.SIMILAR_ITEMS_WITH_THEME]: 'Similar Items Recommendations with Generative AI Theme',
   [Articles.PERSONALIZED_RANKING]: 'Personalized Ranking',
   [Articles.ECOMM_CUSTOMERS_WHO_VIEWED_X]: 'Customers Who Viewed X Also Viewed',
   [Articles.ECOMM_FBT]: 'Frequently Bought Together',
@@ -64,6 +68,8 @@ export const articleTitles = {
   [Articles.DATASETS]: 'Datasets',
   [Articles.SHOPPER_PERSONAS]: 'Shopper Personas',
   [Articles.ENABLING_SHOPPER_PROFILES]: 'Enabling Shopper Profiles',
+  [Articles.PERSONALIZED_PRODUCT]: 'Personalized Product Descriptions',
+  [Articles.ROOM_GENERATOR]: 'Room Makeover'
 };
 
 export const sections = [
@@ -74,11 +80,14 @@ export const sections = [
       Articles.ECOMM_POPULAR_BY_VIEWS,
       Articles.PERSONALIZED_RANKING,
       Articles.SIMILAR_ITEMS_RECOMMENDATIONS,
+      Articles.SIMILAR_ITEMS_WITH_THEME,
       Articles.USER_SEGMENTATION,
       Articles.PERSONALIZED_EMAILS,
       Articles.SMS_MESSAGING,
       Articles.OMNI_CHANNEL,
       Articles.LOCATION_SERVICES,
+      Articles.PERSONALIZED_PRODUCT,
+      Articles.ROOM_GENERATOR,
     ],
   },
   {
